@@ -10,9 +10,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 	
+	private static final String TAG = "SQLiteOpenHelper";
 	private static String DB_PATH = "/data/data/arjun.naik.list/databases";
 	private static String DB_NAME = "flipkartdb.sqlite";
 	private SQLiteDatabase myDataBase;
@@ -21,25 +23,28 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 	public DataBaseHelper(Context context){
 		super(context, DB_NAME, null, 1);
 		this.myContext = context;
+		Log.d(TAG, "DataBaseHelper Constructor is called");
 	}
 	
 	public void createDataBase(){
 		boolean dbExist = checkDataBase();
 		
 		if(dbExist){
-			
+			Log.d(TAG, "createDataBase - DB already exists");
 		}else{
-			
+			Log.d(TAG, "createDataBase - DB does not exist");
 			this.getReadableDatabase();
 			try{
+				Log.d(TAG, "before copyDataBase()");
 				copyDataBase();
 			}catch(IOException e){
-				
+				Log.e(TAG, "createDataBase - IO Exception while copying DB");
 				throw new Error("Error Copying Database");
 				
 			}
 			
 		}
+		
 	}
 	
 	private boolean checkDataBase(){
@@ -47,14 +52,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase checkDB = null;
 		
 		try{
-			String myPath = DB_NAME + DB_PATH;
+			String myPath = DB_PATH + DB_NAME;
 			checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
 			
 		}catch(SQLiteException e){
-			
+			Log.e(TAG, "There was a problem opening when CheckingExists");
 		}
 		
-		if(checkDB == null){
+		if(checkDB != null){
 			checkDB.close();
 		}
 		
@@ -82,9 +87,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 		
 	}
 	
-	public void openDataBase() throws SQLException{
+	public SQLiteDatabase openDataBase() throws SQLException{
 		String myPath = DB_PATH + DB_NAME;
 		myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+		return myDataBase;
 	}
 	
 	@Override
