@@ -41,31 +41,15 @@ public class WunderListViewActivity extends Activity {
         
         book_list = (ListView)findViewById(R.id.main_lv);
         
-        int[] place_holders = new int[1];
+        int[] place_holders = new int[2];
         place_holders[0] = R.id.book_name;
+        place_holders[1] = R.id.book_price;
         
         Cursor first_book = bookAdapter.ExampleSelect(Integer.toString(30));
         
-        SimpleCursorAdapter booklistAdapter = new SimpleCursorAdapter(context,R.layout.book_item , first_book, new String[]{"title"}, place_holders);
+        SimpleCursorAdapter booklistAdapter = new SimpleCursorAdapter(context,R.layout.book_item , first_book, new String[]{"title","original_price"}, place_holders);
         
         book_list.setAdapter(booklistAdapter);
-        /*Log.d(TAG, "Cursor length : " + first_book.getCount());
-        first_book.moveToFirst();
-        StringBuilder book_names = new StringBuilder();
-        
-        while(first_book.isAfterLast() == false){
-	        
-	        String book_title = first_book.getString(0);
-	        book_names.append(book_title);
-	        book_names.append("\n");
-	        first_book.moveToNext();
-        
-        }
-        
-        TextView test_view = (TextView) findViewById(R.id.testdbtv);
-        
-        test_view.setText(book_names.toString());*/
-        
         
     }
     
