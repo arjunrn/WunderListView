@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 public class WunderListViewActivity extends Activity {
@@ -15,6 +17,7 @@ public class WunderListViewActivity extends Activity {
 	private static final String TAG = "WunderListViewActivity";
 	Context context;
 	BookDBAdapter bookAdapter;
+	ListView book_list;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,17 +32,24 @@ public class WunderListViewActivity extends Activity {
         try {
 			bookAdapter.open();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Log.d(TAG, "Exception while opening DB");
+			Log.e(TAG, "Exception while opening DB");
+			return;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			Log.d(TAG, "Exception while opening DB");
+			Log.e(TAG, "Exception while opening DB");
+			return;
 		}
         
-        Cursor first_book = bookAdapter.ExampleSelect(Integer.toString(10));
-        Log.d(TAG, "Cursor length : " + first_book.getCount());
+        book_list = (ListView)findViewById(R.id.main_lv);
+        
+        int[] place_holders = new int[1];
+        place_holders[0] = R.id.book_name;
+        
+        Cursor first_book = bookAdapter.ExampleSelect(Integer.toString(30));
+        
+        SimpleCursorAdapter booklistAdapter = new SimpleCursorAdapter(context,R.layout.book_item , first_book, new String[]{"title"}, place_holders);
+        
+        book_list.setAdapter(booklistAdapter);
+        /*Log.d(TAG, "Cursor length : " + first_book.getCount());
         first_book.moveToFirst();
         StringBuilder book_names = new StringBuilder();
         
@@ -54,7 +64,7 @@ public class WunderListViewActivity extends Activity {
         
         TextView test_view = (TextView) findViewById(R.id.testdbtv);
         
-        test_view.setText(book_names.toString());
+        test_view.setText(book_names.toString());*/
         
         
     }
