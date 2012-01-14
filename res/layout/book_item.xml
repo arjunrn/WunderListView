@@ -2,18 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#0077AC"
-    android:orientation="vertical" >
+    android:background="#0077AC00"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:layout_gravity="center_vertical"
+	    android:background="#CCCCCC"
+	    android:layout_margin="5dip"
+	    android:layout_width="40dip"
+	    android:layout_height="40dip" />
     
     <LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal" >
-		<ImageView
-		    android:background="#CCCCCC"
-		    android:layout_margin="5dip"
-		    android:layout_width="40dip"
-		    android:layout_height="40dip" />
+		android:orientation="vertical" >
 		
 		<TextView
 		    android:textColor="#FFFFFF"
@@ -26,14 +28,14 @@
 	        android:layout_gravity="center_vertical"
 	        android:id="@+id/book_name" />
 	
+		<TextView
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:id="@+id/book_price"
+	        android:layout_margin="5dip"
+	        android:text="Original MRP : Rs. 20"
+	        android:textColor="#FFDDAA" />
+		
 	</LinearLayout>
 	
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/book_price"
-        android:layout_margin="5dip"
-        android:text="Original MRP : Rs. 20"
-        android:textColor="#FFDDAA" />
-    
 </LinearLayout>
