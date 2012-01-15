@@ -35,7 +35,7 @@ public class BookDBAdapter {
 	}
 	
 	public Cursor ExampleSelect(String id_num){
-		String query = "SELECT _id,title, original_price FROM books LIMIT ?";
+		String query = "SELECT _id,title, original_price, image_url FROM books LIMIT ?";
 		if(bDb == null){
 			Log.d(TAG,"bDB is null");
 		}
