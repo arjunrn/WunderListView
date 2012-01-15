@@ -40,8 +40,6 @@ public class RemoteCoverImage extends ImageView {
 	
 	public void loadImage(){
 		
-		Log.d(TAG, uriLocal);
-		
 		File localImage = new File(uriLocal);
 		
 		if(localImage.exists()){
@@ -64,10 +62,9 @@ public class RemoteCoverImage extends ImageView {
 	
 	public void queue(){
 		if(uriThread == null){
-			Log.d(TAG, "Value of uriLocal : " + uriLocal);
 			uriThread = new HTTPThread(uriRemote,uriLocal, imageHandler);
 			HTTPQueue queue = HTTPQueue.getInstance();
-			queue.enqueue(uriThread, HTTPQueue.PRIORITY_HIGH);
+			queue.enqueue(uriThread, HTTPQueue.PRIORITY_LOW);
 		}
 		setImageResource(R.drawable.ic_launcher);
 	}

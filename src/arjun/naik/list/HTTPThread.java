@@ -13,8 +13,8 @@ import android.util.Log;
 public class HTTPThread extends Thread {
 
 	public static final int STATUS_PENDING = 0;
-	public static final int STATUS_RUNNING = 0;
-	public static final int STATUS_FINISHED = 0;
+	public static final int STATUS_RUNNING = 1;
+	public static final int STATUS_FINISHED = 2;
 	private static final String TAG = "HTTPThread";
 	
 	private boolean imageError = false;
@@ -25,24 +25,25 @@ public class HTTPThread extends Thread {
 	private SoftReference<Handler> imageHandler;
 	
 	public HTTPThread(String url, String local, Handler handler){
+	
 		imageURL = url;
 		imageLocalURI = local;
-		Log.d(TAG, "local path : " + imageLocalURI);
 		imageHandler = new SoftReference<Handler>(handler);
+	
 	}
 	
 	public void start(){
 		if(getStatus() == STATUS_PENDING){
 			synchronized (this) {
-				Log.d(TAG, "Status set to running for : " + imageURL);
 				imageStatus = STATUS_RUNNING;
 			}
-			if(imageStatus != STATUS_RUNNING)
-				super.start();
+			super.start();
 		}
 	}
 	
 	public void run(){
+		
+		Log.d(TAG, "RUN on :" + imageURL);
 		try{
 			URL request = new URL(imageURL);
 			InputStream is = (InputStream) request.getContent();
@@ -58,6 +59,7 @@ public class HTTPThread extends Thread {
 				Log.e(TAG, "There was a IO error while fetching the image");
 			}
 			finally{
+				Log.d(TAG, "Completed copying for : " + imageURL);
 				is.close();
 				fos.flush();
 				fos.close();

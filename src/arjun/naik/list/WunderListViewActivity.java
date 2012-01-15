@@ -76,7 +76,7 @@ public class WunderListViewActivity extends Activity {
 
 		@Override
 		public void bindView(View view, Context context, Cursor cursor) {
-			Log.d(TAG, "bindView called");
+			
 			BookHolder book_tag = (BookHolder)view.getTag();
 			book_tag.book_title.setText(cursor.getString(1));
 			book_tag.book_cost.setText(cursor.getString(2));
@@ -84,11 +84,12 @@ public class WunderListViewActivity extends Activity {
 			book_tag.book_url.setRemoteURI(image_url_hash);
 			book_tag.book_url.setLocalURI(image_url_hash);
 			book_tag.book_url.loadImage();
+		
 		}
 
 		@Override
 		public View newView(Context context, Cursor cursor, ViewGroup parent) {
-			Log.d(TAG, "newView called");
+			
 			LayoutInflater inflater = getLayoutInflater();
 			View book_item = inflater.inflate(R.layout.book_item, null);
 			BookHolder book_tag = new BookHolder();
@@ -96,17 +97,9 @@ public class WunderListViewActivity extends Activity {
 			book_tag.book_cost = (TextView) book_item.findViewById(R.id.book_price);
 			book_tag.book_url = (RemoteCoverImage) book_item.findViewById(R.id.remote_cover_image);
 			
-			
-			book_tag.book_title.setText(cursor.getString(1));
-			book_tag.book_cost.setText(cursor.getString(2));
-			
-			String image_url_hash = cursor.getString(3);
-			book_tag.book_url.setRemoteURI(image_url_hash);
-			book_tag.book_url.setLocalURI(image_url_hash);
-			book_tag.book_url.loadImage();
-			
 			book_item.setTag(book_tag);
 			return book_item;
+		
 		}
     	
 		private class BookHolder{

@@ -81,6 +81,7 @@ public class HTTPQueue {
 		@Override
 		public void handleMessage(Message message){
 			finished(message.what);
+			runFirst();
 		}
 	};
 	
