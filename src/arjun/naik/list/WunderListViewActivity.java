@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.os.Bundle;
@@ -11,10 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class WunderListViewActivity extends Activity {
     
@@ -50,13 +54,23 @@ public class WunderListViewActivity extends Activity {
         place_holders[0] = R.id.book_name;
         place_holders[1] = R.id.book_price;
         
-        Cursor first_book = bookAdapter.ExampleSelect(Integer.toString(30));
+        Cursor first_book = bookAdapter.GetFirstBooks(Integer.toString(30));
         
         Log.d(TAG, "Before creating adapter");
         BookCursorAdapter booklistAdapter = new BookCursorAdapter(context,first_book);
         
         Log.d(TAG, "Going to set adapter");
         book_list.setAdapter(booklistAdapter);
+        
+        book_list.setOnItemClickListener(new OnItemClickListener() {
+
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent bookDetailIntent = new Intent(context, BookDetail.class);
+				bookDetailIntent.putExtra("bookid", Long.toString(id));
+				startActivity(bookDetailIntent);
+			}
+		
+        });
         
     }
     
@@ -78,9 +92,9 @@ public class WunderListViewActivity extends Activity {
 		public void bindView(View view, Context context, Cursor cursor) {
 			
 			BookHolder book_tag = (BookHolder)view.getTag();
-			book_tag.book_title.setText(cursor.getString(1));
-			book_tag.book_cost.setText(cursor.getString(2));
-			String image_url_hash = cursor.getString(3);
+			book_tag.book_title.setText(cursor.getString(cursor.getColumnIndex("title")));
+			book_tag.book_cost.setText(cursor.getString(cursor.getColumnIndex("discount_price")));
+			String image_url_hash = cursor.getString(cursor.getColumnIndex("image_url"));
 			book_tag.book_url.setRemoteURI(image_url_hash);
 			book_tag.book_url.setLocalURI(image_url_hash);
 			book_tag.book_url.loadImage();

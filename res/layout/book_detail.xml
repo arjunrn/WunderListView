@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/dark_wood_bg"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/book_detail_title"
+        android:textColor="#FFFFFF"
+        android:textSize="15dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:typeface="serif"
+        android:layout_margin="10dip"
+        android:text="Book Title - And Extension" />
+    
+    <arjun.naik.list.RemoteCoverImage
+        android:id="@+id/book_detail_cover"
+        android:layout_height="180dip"
+        android:layout_width="wrap_content"
+        android:minWidth="140dip"
+        android:layout_gravity="center"
+        android:background="#AAAAAA" />
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+       	android:gravity="center"
+       	android:layout_margin="10dip"
+       	android:orientation="horizontal" >
+       	<TextView
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:textSize="12dip"
+       	    android:text="Original Price : " />
+        
+       	<TextView
+       	    android:id="@+id/book_detail_op"
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:textSize="12dip"
+       	    android:text="Rs. 300" />
+       	
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+       	android:gravity="center"
+       	android:layout_margin="10dip"
+       	android:orientation="horizontal" >
+       	<TextView
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:textSize="13dip"
+       	    android:textStyle="bold"
+       	    android:text="Discounted Price : " />
+        
+       	<TextView
+       	    android:id="@+id/book_detail_dp"
+       	    android:layout_width="wrap_content"
+       	    android:layout_height="wrap_content"
+       	    android:textSize="13dip"
+       	    android:textStyle="bold"
+       	    android:text="Rs. 250" />
+       	
+    </LinearLayout>
+    
+    <TextView
+        android:id="@+id/book_detail_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="WunderBook Category"
+        android:textColor="#000000"
+        android:textSize="14dip"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dip"
+        android:background="@drawable/book_cover"
+        android:padding="10dip" />
+    
+</LinearLayout>

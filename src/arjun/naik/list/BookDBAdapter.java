@@ -44,6 +44,15 @@ public class BookDBAdapter {
 		return bDb.rawQuery(query, new String[]{id_num});
 	}
 	
+	public Cursor GetFirstBooks(String limit_num){
+		return bDb.query("books", new String[]{"_id","title","discount_price","image_url"}, "title like '%" + "food" + "%'",
+			null, null, null, null);
+	}
+	
+	public Cursor GetBookDetails(String book_id){
+		return bDb.query("books", null, "_id=?", new String[]{book_id}, null, null, null);
+	}
+	
 	public void close(){
 		bDBHelper.close();
 	}
