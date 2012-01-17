@@ -8,7 +8,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
 public class RemoteCoverImage extends ImageView {
@@ -17,9 +16,12 @@ public class RemoteCoverImage extends ImageView {
 	private String uriLocal;
 	private String uriRemote;
 	private HTTPThread uriThread = null;
+	private boolean imageLoaded = false;
+	private Drawable defaultBookCover;
 	
 	public RemoteCoverImage(Context context, AttributeSet attrs) {
 		super(context, attrs, 0);
+		defaultBookCover = context.getResources().getDrawable(R.drawable.ic_launcher);
 	}
 
 	public RemoteCoverImage(Context context, AttributeSet attrs, int defStyle){
@@ -30,15 +32,19 @@ public class RemoteCoverImage extends ImageView {
 		String[] split_urls = localURI.split("/");
 		String last_file_name = split_urls[split_urls.length - 1];
 		uriLocal = Environment.getExternalStorageDirectory() + "/.remote-image-view-cache/" + last_file_name;
+		imageLoaded = false;
 	}
 	
 	public void setRemoteURI(String remoteURI){
 		if(remoteURI.startsWith("http")){
 			uriRemote = remoteURI;
+			imageLoaded = false;
 		}
 	}
 	
-	public void loadImage(){
+	public void loadImage(Boolean remoteLoad){
+		
+		if(imageLoaded) return;
 		
 		File localImage = new File(uriLocal);
 		
@@ -46,6 +52,10 @@ public class RemoteCoverImage extends ImageView {
 			setFromLocal();
 		}
 		else{
+			if(!remoteLoad){
+				setImageDrawable(defaultBookCover);
+				return;
+			}
 			localImage.getParentFile().mkdirs();
 			queue();
 		}
@@ -73,6 +83,7 @@ public class RemoteCoverImage extends ImageView {
 		uriThread = null;
 		Drawable d = Drawable.createFromPath(uriLocal);
 		if(d != null){
+			imageLoaded = true;
 			setImageDrawable(d);
 		}
 	}

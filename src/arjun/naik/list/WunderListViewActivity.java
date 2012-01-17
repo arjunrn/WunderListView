@@ -12,13 +12,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class WunderListViewActivity extends Activity {
     
@@ -26,6 +26,7 @@ public class WunderListViewActivity extends Activity {
 	Context context;
 	BookDBAdapter bookAdapter;
 	ListView book_list;
+	int listScrollState = BookListListener.SCROLL_STATE_IDLE;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class WunderListViewActivity extends Activity {
 		
         });
         
+        book_list.setOnScrollListener(new BookListListener());
     }
     
     @Override
@@ -81,11 +83,10 @@ public class WunderListViewActivity extends Activity {
     }
     
     private class BookCursorAdapter extends CursorAdapter{
-
-		public BookCursorAdapter(Context context, Cursor c) {
+    	
+    	public BookCursorAdapter(Context context, Cursor c) {
 			super(context, c);
 			Log.d(TAG, "BookCursorAdapter constructor called");
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
@@ -97,7 +98,12 @@ public class WunderListViewActivity extends Activity {
 			String image_url_hash = cursor.getString(cursor.getColumnIndex("image_url"));
 			book_tag.book_url.setRemoteURI(image_url_hash);
 			book_tag.book_url.setLocalURI(image_url_hash);
-			book_tag.book_url.loadImage();
+			if(listScrollState != BookListListener.SCROLL_STATE_FLING){
+				book_tag.book_url.loadImage(true);
+			}
+			else{
+				book_tag.book_url.loadImage(false);
+			}
 		
 		}
 
@@ -123,5 +129,31 @@ public class WunderListViewActivity extends Activity {
 		}
 		
     }
+    
+    public class BookListListener implements OnScrollListener{
+
+		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalVisibleItems) {
+			
+		}
+
+		public void onScrollStateChanged(AbsListView view, int scrollState) {
+			if(scrollState == OnScrollListener.SCROLL_STATE_FLING){
+				listScrollState = scrollState;
+			}
+			else{
+				listScrollState = OnScrollListener.SCROLL_STATE_IDLE;
+				int first_visible = view.getFirstVisiblePosition();
+				int last_visible = view.getLastVisiblePosition() - first_visible;
+				
+				for(int i = 0 ; i <= last_visible ; i++){
+					View visible_child = view.getChildAt(i);
+					RemoteCoverImage rci = (RemoteCoverImage) visible_child.findViewById(R.id.remote_cover_image);
+					rci.loadImage(true);
+				}
+			}
+			
+		}
+		
+	}
     
 }

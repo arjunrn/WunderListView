@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class BookDetail extends Activity {
 	Context context;
@@ -34,7 +33,7 @@ public class BookDetail extends Activity {
 		RemoteCoverImage bookCover = (RemoteCoverImage)findViewById(R.id.book_detail_cover);
 		bookCover.setRemoteURI(cover_url);
 		bookCover.setLocalURI(cover_url);
-		bookCover.loadImage();
+		bookCover.loadImage(true);
 		
 		String original_price = bookDetailCursor.getString(bookDetailCursor.getColumnIndex("original_price"));
 		TextView originalPriceTV = (TextView)findViewById(R.id.book_detail_op);
