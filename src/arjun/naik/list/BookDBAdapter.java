@@ -6,11 +6,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 public class BookDBAdapter {
 	
-	private static final String TAG = "BookDBAdapter";
+	//private static final String TAG = "BookDBAdapter";
 	private DataBaseHelper bDBHelper;
 	private static SQLiteDatabase bDb;
 	
@@ -34,19 +33,10 @@ public class BookDBAdapter {
 		return this;
 	}
 	
-	public Cursor ExampleSelect(String id_num){
-		String query = "SELECT _id,title, original_price, image_url FROM books LIMIT ?";
-		if(bDb == null){
-			Log.d(TAG,"bDB is null");
-		}
-		String[] params = new String[1];
-		params[0] = id_num;
-		return bDb.rawQuery(query, new String[]{id_num});
-	}
 	
-	public Cursor GetFirstBooks(String limit_num){
-		return bDb.query("books", new String[]{"_id","title","discount_price","image_url"}, "title like '%" + "food" + "%'",
-			null, null, null, null);
+	public Cursor GetFirstBooks(String searchTerm){
+		return bDb.query("books", new String[]{"_id","title","discount_price","image_url"}, "_id IN (SELECT book_id FROM book_titles WHERE book_title MATCH ?)",
+			new String[]{searchTerm}, null, null, null);
 	}
 	
 	public Cursor GetBookDetails(String book_id){

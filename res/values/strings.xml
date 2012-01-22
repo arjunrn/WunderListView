@@ -3,5 +3,7 @@
 
     <string name="hello">Hello World, WunderListViewActivity!</string>
     <string name="app_name">WunderListView</string>
+    <string name="wundersearch">WunderSearch</string>
+    <string name="first_rn">Just a moment. Readying for the first run.</string>
 
 </resources>

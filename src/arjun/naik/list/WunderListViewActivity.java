@@ -3,6 +3,7 @@ package arjun.naik.list;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.database.SQLException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -27,11 +29,20 @@ public class WunderListViewActivity extends Activity {
 	BookDBAdapter bookAdapter;
 	ListView book_list;
 	int listScrollState = BookListListener.SCROLL_STATE_IDLE;
-	
-    @Override
+	String searchTerm = "android";
+    
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent newIntent = getIntent();
+        String intentAction = newIntent.getAction();
+        if(intentAction != null && intentAction.equals(Intent.ACTION_SEARCH)){
+        	Log.d(TAG, "Search Intent - Need to do search");
+        	searchTerm = newIntent.getStringExtra(SearchManager.QUERY);
+        	Log.d(TAG, "New Search term is : " + searchTerm);
+        }
+        
         setContentView(R.layout.main);
         Log.d(TAG, "main layout is set");
         
@@ -55,7 +66,7 @@ public class WunderListViewActivity extends Activity {
         place_holders[0] = R.id.book_name;
         place_holders[1] = R.id.book_price;
         
-        Cursor first_book = bookAdapter.GetFirstBooks(Integer.toString(30));
+        Cursor first_book = bookAdapter.GetFirstBooks(searchTerm);
         
         Log.d(TAG, "Before creating adapter");
         BookCursorAdapter booklistAdapter = new BookCursorAdapter(context,first_book);
@@ -128,6 +139,22 @@ public class WunderListViewActivity extends Activity {
 			TextView book_cost;
 		}
 		
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+    	menu.add(R.menu.mainviewmenu);
+    	return super.onCreateOptionsMenu(menu);
+    }
+    
+    @Override
+    protected void onNewIntent(Intent intent){
+    	Log.d(TAG, "onNewIntent called");
+    	if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            // handles a search query
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.d(TAG, "Query : " + query);
+        }
     }
     
     public class BookListListener implements OnScrollListener{
