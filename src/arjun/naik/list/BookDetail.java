@@ -29,7 +29,7 @@ public class BookDetail extends Activity {
 		TextView bookTitleTV = (TextView)findViewById(R.id.book_detail_title);
 		bookTitleTV.setText(bookTitle);
 		
-		String cover_url = bookDetailCursor.getString(bookDetailCursor.getColumnIndex("image_url"));
+		String cover_url = bookDetailCursor.getString(bookDetailCursor.getColumnIndex("image"));
 		RemoteCoverImage bookCover = (RemoteCoverImage)findViewById(R.id.book_detail_cover);
 		bookCover.setRemoteURI(cover_url);
 		bookCover.setLocalURI(cover_url);
@@ -43,9 +43,21 @@ public class BookDetail extends Activity {
 		TextView discountPriceTV = (TextView)findViewById(R.id.book_detail_dp);
 		discountPriceTV.setText(discount_price);
 		
-		String book_category = bookDetailCursor.getString(bookDetailCursor.getColumnIndex("category"));
+		String book_category = bookDetailCursor.getString(bookDetailCursor.getColumnIndex("delivery_time"));
 		TextView bookCategoryTV = (TextView)findViewById(R.id.book_detail_category);
 		bookCategoryTV.setText(book_category);
+		
+		String book_author = bookDetailCursor.getString(bookDetailCursor.getColumnIndex("author"));
+		TextView bookAuthor = (TextView)findViewById(R.id.book_author);
+		bookAuthor.setText(book_author);
+		
+		String book_publisher = bookDetailCursor.getString(bookDetailCursor.getColumnIndex("publisher"));
+		TextView publisher = (TextView)findViewById(R.id.publisher);
+		publisher.setText(book_publisher);
+		
+		String book_isbn = bookDetailCursor.getString(bookDetailCursor.getColumnIndex("isbn"));
+		TextView isbnTV = (TextView)findViewById(R.id.book_isbn);
+		isbnTV.setText(book_isbn);
 		
 	}
 	

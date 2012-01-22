@@ -35,7 +35,7 @@ public class BookDBAdapter {
 	
 	
 	public Cursor GetFirstBooks(String searchTerm){
-		return bDb.query("books", new String[]{"_id","title","discount_price","image_url"}, "_id IN (SELECT book_id FROM book_titles WHERE book_title MATCH ?)",
+		return bDb.query("books", new String[]{"_id","title","discount_price","image"}, "_id IN (SELECT rowid FROM book_titles WHERE book_titles MATCH ?)",
 			new String[]{searchTerm}, null, null, null);
 	}
 	

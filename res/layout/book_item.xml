@@ -51,14 +51,14 @@
 		    <TextView
 		        android:layout_width="wrap_content"
 		        android:layout_height="20dip"
-		        android:text="Price : Rs. "
+		        android:text="Price : "
 		        android:textColor="#FFDDAA" />
 		    
 		    <TextView
 		        android:layout_width="wrap_content"
 		        android:layout_height="20dip"
 		        android:id="@+id/book_price"
-		        android:text="20"
+		        android:text="Rs. 20"
 		        android:textColor="#FFDDAA" />
 		    
 		</LinearLayout>

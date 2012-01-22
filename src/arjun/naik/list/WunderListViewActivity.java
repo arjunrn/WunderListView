@@ -19,6 +19,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CursorAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,7 +31,8 @@ public class WunderListViewActivity extends Activity {
 	ListView book_list;
 	int listScrollState = BookListListener.SCROLL_STATE_IDLE;
 	String searchTerm = "android";
-    
+	LinearLayout noResultMessage;
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +63,20 @@ public class WunderListViewActivity extends Activity {
 		}
         
         book_list = (ListView)findViewById(R.id.main_lv);
+        noResultMessage = (LinearLayout)findViewById(R.id.no_results_message);
         
         int[] place_holders = new int[2];
         place_holders[0] = R.id.book_name;
         place_holders[1] = R.id.book_price;
         
         Cursor first_book = bookAdapter.GetFirstBooks(searchTerm);
+        
+        if(first_book.getCount() == 0){
+        	book_list.setVisibility(View.GONE);
+        	noResultMessage.setVisibility(View.VISIBLE);
+        	TextView noResultSearchTerm = (TextView) findViewById(R.id.no_results_term);
+        	noResultSearchTerm.setText(searchTerm);
+        }
         
         Log.d(TAG, "Before creating adapter");
         BookCursorAdapter booklistAdapter = new BookCursorAdapter(context,first_book);
@@ -106,7 +116,7 @@ public class WunderListViewActivity extends Activity {
 			BookHolder book_tag = (BookHolder)view.getTag();
 			book_tag.book_title.setText(cursor.getString(cursor.getColumnIndex("title")));
 			book_tag.book_cost.setText(cursor.getString(cursor.getColumnIndex("discount_price")));
-			String image_url_hash = cursor.getString(cursor.getColumnIndex("image_url"));
+			String image_url_hash = cursor.getString(cursor.getColumnIndex("image"));
 			book_tag.book_url.setRemoteURI(image_url_hash);
 			book_tag.book_url.setLocalURI(image_url_hash);
 			if(listScrollState != BookListListener.SCROLL_STATE_FLING){
@@ -141,11 +151,7 @@ public class WunderListViewActivity extends Activity {
 		
     }
     
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-    	menu.add(R.menu.mainviewmenu);
-    	return super.onCreateOptionsMenu(menu);
-    }
+    
     
     @Override
     protected void onNewIntent(Intent intent){
